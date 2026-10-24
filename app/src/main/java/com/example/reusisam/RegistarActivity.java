@@ -27,16 +27,18 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.reusisam.DTOS.RecordDTO;
-import com.example.reusisam.DTOS.UserDTO;
+import com.example.reusisam.data.local.Parcial2Dam2Database;
+import com.example.reusisam.data.local.entity.Usuario;
+import com.example.reusisam.data.remote.FirebaseCollections;
+import com.example.reusisam.data.remote.FirebaseProvider;
+import com.example.reusisam.data.remote.model.UsuarioFirebase;
+import com.example.reusisam.data.security.PasswordHasher;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class RegistarActivity extends AppCompatActivity {
     private Toolbar ARtoolbar;
@@ -47,12 +49,14 @@ public class RegistarActivity extends AppCompatActivity {
     private CheckBox cbARConfirmPassword, cbARPassword;
     private Button btARSave, btARReturn;
     private SharedPreferences preferences;
+    private ExecutorService databaseExecutor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_registar);
+        databaseExecutor = Executors.newSingleThreadExecutor();
 
         etARConfirmPassword = findViewById(R.id.et_ARConfirmPassword);
         etARPassword = findViewById(R.id.et_ARPassword);
@@ -168,43 +172,59 @@ public class RegistarActivity extends AppCompatActivity {
                 }
                 return false;
             } else {
-                // Si las validaciones locales son correctas, enviamos el usuario al Backend mediante la API
-                UserDTO nuevoUsuario = new UserDTO(null, name, "d", email, password, true);
-                enviarUsuarioALaApi(nuevoUsuario);
+                registrarEnFirebase(name, email, password);
                 return true;
             }
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void enviarUsuarioALaApi(UserDTO userDTO) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8085/api/v1/demoapirestdam235/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ApiService apiService = retrofit.create(ApiService.class);
-        Call<Boolean> call = apiService.saveUser(userDTO);
-
-        call.enqueue(new Callback<Boolean>() {
-            @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                if (response.isSuccessful() && response.body() != null && response.body()) {
-                    Toast.makeText(RegistarActivity.this, "¡Usuario registrado con éxito en el servidor!", Toast.LENGTH_LONG).show();
-                    LimpiarCampos();
-                    // Opcional: Regresar al login automáticamente tras un registro exitoso
-                    // Regresar();
-                } else {
-                    Toast.makeText(RegistarActivity.this, "Error al guardar el usuario en el backend", Toast.LENGTH_SHORT).show();
-                }
+    private void guardarUsuarioLocal(String nombre, String email, String password) {
+        databaseExecutor.execute(() -> {
+            Parcial2Dam2Database database =
+                    Parcial2Dam2Database.getInstance(getApplicationContext());
+            Usuario existente = database.usuarioDao().obtenerPorEmail(email);
+            if (existente == null) {
+                database.usuarioDao().insertar(new Usuario(nombre, email, PasswordHasher.hash(password)));
             }
-
-            @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
-                Toast.makeText(RegistarActivity.this, "Error de red: " + t.getMessage(), Toast.LENGTH_LONG).show();
-            }
+            runOnUiThread(() -> {
+                btARSave.setEnabled(true);
+                Toast.makeText(this, "Usuario registrado correctamente",
+                        Toast.LENGTH_LONG).show();
+                LimpiarCampos();
+            });
         });
+    }
+
+    private void registrarEnFirebase(String nombre, String email, String password) {
+        btARSave.setEnabled(false);
+        FirebaseProvider.firestore().collection(FirebaseCollections.USUARIOS)
+                .whereEqualTo("email", email).limit(1).get()
+                .addOnSuccessListener(snapshot -> {
+                    if (!snapshot.isEmpty()) {
+                        btARSave.setEnabled(true);
+                        Toast.makeText(this, "El correo ya está registrado",
+                                Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    String hash = PasswordHasher.hash(password);
+                    FirebaseProvider.firestore().collection(FirebaseCollections.USUARIOS)
+                            .add(new UsuarioFirebase(nombre, email, hash))
+                            .addOnSuccessListener(unused ->
+                                    guardarUsuarioLocal(nombre, email, password))
+                            .addOnFailureListener(error -> {
+                                btARSave.setEnabled(true);
+                                Toast.makeText(this, "No se pudo guardar el usuario: "
+                                        + error.getMessage(), Toast.LENGTH_LONG).show();
+                            });
+                })
+                .addOnFailureListener(error -> {
+                    btARSave.setEnabled(true);
+                    Toast.makeText(this, "No se pudo consultar Firestore: "
+                            + error.getMessage(), Toast.LENGTH_LONG).show();
+                });
     }
 
     public RecordDTO Verificar() {

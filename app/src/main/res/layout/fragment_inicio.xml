@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="24dp">
 
@@ -17,8 +17,47 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bienvenido a la pantalla principal"
+        android:text="Resumen de la información almacenada"
         android:textSize="16sp"
         android:layout_marginTop="12dp" />
+
+    <TextView
+        android:id="@+id/tvTotalServicios"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="#E8F0FE"
+        android:padding="20dp"
+        android:text="Servicios registrados: 0"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvServiciosActivos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="#E8F5E9"
+        android:padding="20dp"
+        android:text="Servicios activos: 0"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tvTotalCategorias"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="#FFF3E0"
+        android:padding="20dp"
+        android:text="Categorías registradas: 0"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tvResumenEstado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Cargando información..."
+        android:textAlignment="center" />
 
 </LinearLayout>

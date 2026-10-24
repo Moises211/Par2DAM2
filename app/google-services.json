@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "556914724649",
+    "project_id": "reusisam",
+    "storage_bucket": "reusisam.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:556914724649:android:2ea11084fdad26a9877138",
+        "android_client_info": {
+          "package_name": "com.example.reusisam"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAU0wUiJ4eIhTT7wn4JHZZAKWog1sqc9Eg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

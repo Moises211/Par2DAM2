@@ -4,6 +4,10 @@ public class ProductsDTO {
     private Integer code;
     private String name;
     private boolean status;
+    private String firestoreId;
+    private String description;
+    private float cost;
+    private String category;
 
     // Constructor vacío requerido por Gson
     public ProductsDTO() {
@@ -37,5 +41,37 @@ public class ProductsDTO {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public String getFirestoreId() {
+        return firestoreId;
+    }
+
+    public void setFirestoreId(String firestoreId) {
+        this.firestoreId = firestoreId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public float getCost() {
+        return cost;
+    }
+
+    public void setCost(float cost) {
+        this.cost = cost;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }
