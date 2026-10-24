@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <title>Barber App</title>
+  <defs>
+    <clipPath id="cuerpo-clip"><rect x="196" y="120" width="120" height="272" rx="40"/></clipPath>
+  </defs>
+  <g id="fondo">
+    <rect id="cuadro" width="512" height="512" rx="112" fill="#337DFF"/>
+  </g>
+  <g id="poste">
+    <ellipse id="sombra" cx="256" cy="448" rx="78" ry="13" fill="#1F5FD1" opacity="0.55"/>
+    <rect id="cuerpo" x="196" y="120" width="120" height="272" rx="40" fill="#FFFFFF"/>
+    <g id="rayas" clip-path="url(#cuerpo-clip)">
+      <path fill="#E61212" d="M170 82 L342 -4 L342 22 L170 108Z"/>
+      <path fill="#1B3FA0" d="M170 116 L342 30 L342 56 L170 142Z"/>
+      <path fill="#E61212" d="M170 150 L342 64 L342 90 L170 176Z"/>
+      <path fill="#1B3FA0" d="M170 184 L342 98 L342 124 L170 210Z"/>
+      <path fill="#E61212" d="M170 218 L342 132 L342 158 L170 244Z"/>
+      <path fill="#1B3FA0" d="M170 252 L342 166 L342 192 L170 278Z"/>
+      <path fill="#E61212" d="M170 286 L342 200 L342 226 L170 312Z"/>
+      <path fill="#1B3FA0" d="M170 320 L342 234 L342 260 L170 346Z"/>
+      <path fill="#E61212" d="M170 354 L342 268 L342 294 L170 380Z"/>
+      <path fill="#1B3FA0" d="M170 388 L342 302 L342 328 L170 414Z"/>
+      <path fill="#E61212" d="M170 422 L342 336 L342 362 L170 448Z"/>
+      <path fill="#1B3FA0" d="M170 456 L342 370 L342 396 L170 482Z"/>
+      <path fill="#E61212" d="M170 490 L342 404 L342 430 L170 516Z"/>
+      <path fill="#1B3FA0" d="M170 524 L342 438 L342 464 L170 550Z"/>
+    </g>
+    <rect id="tapa-superior" x="182" y="88" width="148" height="44" rx="16" fill="#FFB020"/>
+    <rect id="tapa-inferior" x="182" y="380" width="148" height="44" rx="16" fill="#FFB020"/>
+  </g>
+</svg>

@@ -52,6 +52,8 @@ dependencies {
     annotationProcessor(libs.room.compiler)
 
     implementation("com.google.code.gson:gson:2.10.1")
+
+    implementation("org.osmdroid:osmdroid-android:6.1.20")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

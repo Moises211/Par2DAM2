@@ -12,6 +12,11 @@
         android:title="Productos" />
 
     <item
+        android:id="@+id/nav_mapa"
+        android:icon="@android:drawable/ic_menu_mapmode"
+        android:title="Mapa" />
+
+    <item
         android:id="@+id/nav_perfil"
         android:icon="@android:drawable/ic_menu_myplaces"
         android:title="Perfil" />
