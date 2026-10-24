@@ -2,6 +2,10 @@ plugins {
     alias(libs.plugins.android.application)
 }
 
+if (file("google-services.json").exists()) {
+    apply(plugin = "com.google.gms.google-services")
+}
+
 android {
     namespace = "com.example.reusisam"
     compileSdk {
@@ -36,14 +40,16 @@ android {
 }
 
 dependencies {
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore)
+    implementation(libs.work.runtime)
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
-
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
 
     implementation("com.google.code.gson:gson:2.10.1")
 

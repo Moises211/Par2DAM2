@@ -1,26 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="20dp">
+    android:fillViewport="true">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Datos del Producto"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp"/>
+        android:orientation="vertical"
+        android:padding="8dp">
 
-    <EditText
-        android:id="@+id/etNombreDialogo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Ingrese el nombre del producto"
-        android:inputType="text"
-        android:minHeight="48dp"
-        android:padding="10dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Completa la información del servicio"
+            android:textSize="14sp"
+            android:layout_marginBottom="14dp" />
 
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etNombreDialogo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre del servicio"
+            android:inputType="text"
+            android:background="@drawable/background_input_modal"
+            android:minHeight="48dp"
+            android:padding="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Descripción"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etDescripcionDialogo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Describe el servicio"
+            android:inputType="textMultiLine"
+            android:background="@drawable/background_input_modal"
+            android:minLines="2"
+            android:padding="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Costo"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etCostoDialogo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="0.00"
+            android:inputType="numberDecimal"
+            android:background="@drawable/background_input_modal"
+            android:minHeight="48dp"
+            android:padding="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Categoría"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/spCategoriaDialogo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_input_modal"
+            android:minHeight="48dp"
+            android:padding="4dp" />
+
+        <CheckBox
+            android:id="@+id/cbEstadoDialogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:checked="true"
+            android:text="Servicio activo" />
+    </LinearLayout>
+</ScrollView>

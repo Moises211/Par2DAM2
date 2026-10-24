@@ -7,22 +7,37 @@
     android:padding="16dp"
     android:fitsSystemWindows="true">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnAgregarProducto"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Agregar servicio"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@android:color/holo_blue_dark" />
+
+        <Button
+            android:id="@+id/btnCategorias"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="Categorías"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@android:color/holo_blue_dark" />
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerProductos"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="0dp"
         android:scrollbars="vertical" />
-
-    <Button
-        android:id="@+id/btnAgregarProducto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
-        android:backgroundTint="@android:color/holo_blue_dark"
-        android:text="Agregar Nuevo Producto"
-        android:textColor="@android:color/white" />
 
 </LinearLayout>

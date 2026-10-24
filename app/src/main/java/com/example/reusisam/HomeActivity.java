@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.reusisam.data.sync.SyncScheduler;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -24,6 +25,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
+        SyncScheduler.programar(getApplicationContext());
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         toolbar = findViewById(R.id.toolbarAR);
@@ -69,12 +71,19 @@ public class HomeActivity extends AppCompatActivity {
         int idmenu = item.getItemId();
 
         if(idmenu == R.id.nav_cerrarSeccion){
+            getSharedPreferences("UserSession", MODE_PRIVATE)
+                    .edit()
+                    .remove("IS_LOGGED_IN")
+                    .remove("USER_EMAIL")
+                    .apply();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
+            return true;
         }
         if(idmenu == R.id.nav_salir){
             finishAffinity();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

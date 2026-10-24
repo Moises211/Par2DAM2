@@ -41,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:text="Acceso REUSISAM"
+        android:text="Acceso A Barber"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -86,6 +86,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cb_AMRemember" />
+
+    <CheckBox
+        android:id="@+id/cb_AMRemember"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Recordar usuario y contraseña"
+        app:layout_constraintStart_toStartOf="@+id/et_AMPassword"
         app:layout_constraintTop_toBottomOf="@+id/et_AMPassword" />
 
     <!--Button

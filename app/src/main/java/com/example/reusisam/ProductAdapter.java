@@ -37,6 +37,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         ProductsDTO product = productList.get(position);
         holder.tvName.setText(product.getName());
         holder.tvCode.setText("Código: " + product.getCode());
+        holder.tvCode.setText(product.getDescription());
+        holder.tvDetail.setText(String.format(java.util.Locale.getDefault(),
+                "Costo: $%.2f · Categoría: %s", product.getCost(),
+                product.getCategory() == null || product.getCategory().isEmpty()
+                        ? "Sin categoría" : product.getCategory()));
+        holder.tvStatus.setText(product.isStatus() ? "Activo" : "Inactivo");
 
         holder.btnEdit.setOnClickListener(v -> listener.onEditClick(product));
         holder.btnDelete.setOnClickListener(v -> listener.onDeleteClick(product));
@@ -49,12 +55,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvCode;
+        TextView tvDetail, tvStatus;
         Button btnEdit, btnDelete;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvNombreProducto);
             tvCode = itemView.findViewById(R.id.tvCodigoProducto);
+            tvDetail = itemView.findViewById(R.id.tvDetalleServicio);
+            tvStatus = itemView.findViewById(R.id.tvEstadoServicio);
             btnEdit = itemView.findViewById(R.id.btnEditar);
             btnDelete = itemView.findViewById(R.id.btnEliminar);
         }

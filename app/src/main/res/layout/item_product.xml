@@ -24,7 +24,7 @@
                 android:id="@+id/tvNombreProducto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nombre del Producto"
+                android:text="Nombre del Servicio"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"/>
@@ -33,8 +33,22 @@
                 android:id="@+id/tvCodigoProducto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Código: 1"
+                android:text="Descripción del servicio"
                 android:textSize="14sp"
+                android:layout_marginTop="4dp"/>
+
+            <TextView
+                android:id="@+id/tvDetalleServicio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Costo: $0.00 · Categoría: General"
+                android:layout_marginTop="4dp"/>
+
+            <TextView
+                android:id="@+id/tvEstadoServicio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Activo"
                 android:layout_marginTop="4dp"/>
         </LinearLayout>
 

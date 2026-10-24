@@ -1,7 +1,6 @@
 package com.example.reusisam;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,14 +17,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.reusisam.DTOS.LoginDTO; // Asegúrate de crear este DTO con email y password
-import com.example.reusisam.DTOS.TokenDTO;
+import com.example.reusisam.data.local.Parcial2Dam2Database;
+import com.example.reusisam.data.local.entity.Usuario;
+import com.example.reusisam.data.remote.FirebaseCollections;
+import com.example.reusisam.data.remote.FirebaseProvider;
+import com.example.reusisam.data.security.PasswordHasher;
+import com.example.reusisam.data.security.CredentialCipher;
+import com.example.reusisam.data.remote.model.UsuarioFirebase;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,10 +39,17 @@ public class MainActivity extends AppCompatActivity {
     private Button btnLogin;
     private Toolbar toolbar;
     private CheckBox cbAMPassword;
+    private CheckBox cbAMRemember;
+    private ExecutorService databaseExecutor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (haySesionActiva()) {
+            abrirHome(false);
+            return;
+        }
         setContentView(R.layout.activity_main);
+        databaseExecutor = Executors.newSingleThreadExecutor();
 
         toolbar = findViewById(R.id.toolbarAR);
         toolbar.setTitle("Login de Usuario");
@@ -54,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
 
         btAMExit = findViewById(R.id.bt_AMExit);
         cbAMPassword = findViewById(R.id.cb_AMPassword);
+        cbAMRemember = findViewById(R.id.cb_AMRemember);
+        cargarCredencialesRecordadas();
 
         btAMExit.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -67,7 +77,10 @@ public class MainActivity extends AppCompatActivity {
             String password = etPassword.getText().toString().trim();
 
             if (!email.isEmpty() && !password.isEmpty()) {
-                facerLoginEnApi(email, password);
+                if (!validarCredenciales(email, password)) {
+                    return;
+                }
+                iniciarSesion(email, password);
             } else {
                 Toast.makeText(MainActivity.this, "Rellena todos los campos", Toast.LENGTH_SHORT).show();
             }
@@ -91,45 +104,128 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void facerLoginEnApi(String email, String password) {
-        // Configuración de Retrofit (Apunta a tu PC con 10.0.2.2 si usas emulador)
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8085/api/v1/demoapirestdam235/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+    private boolean validarCredenciales(String email, String password) {
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            etEmail.setError("Ingresa un correo válido");
+            return false;
+        }
+        if (password.length() < 8 || !password.matches(".*[A-Za-z].*")
+                || !password.matches(".*\\d.*")) {
+            etPassword.setError("Mínimo 8 caracteres, con letras y números");
+            return false;
+        }
+        return true;
+    }
 
-        ApiService apiService = retrofit.create(ApiService.class);
-        LoginDTO loginDTO = new LoginDTO(email, password);
-        System.out.println("Email and Pass " +  email+ " " + password);
-        Call<TokenDTO> call = apiService.login(loginDTO);
-        call.enqueue(new Callback<TokenDTO>() {
-            @Override
-            public void onResponse(Call<TokenDTO> call, Response<TokenDTO> response) {
-                System.out.println("respuesta " + response.isSuccessful());
-                if (response.isSuccessful() && response.body() != null) {
-                    String tokenJwt = response.body().getToken();
+    private void guardarSesion(String email) {
+        getSharedPreferences("UserSession", MODE_PRIVATE)
+                .edit()
+                .putString("USER_EMAIL", email)
+                .putBoolean("IS_LOGGED_IN", true)
+                .apply();
+    }
 
-                    // AQUÍ SÍ USAMOS SharedPreferences: Guardamos el token para usarlo después
-                    SharedPreferences preferences = getSharedPreferences("UserSession", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("JWT_TOKEN", tokenJwt);
-                    editor.apply();
+    private boolean haySesionActiva() {
+        android.content.SharedPreferences preferences =
+                getSharedPreferences("UserSession", MODE_PRIVATE);
+        return preferences.getBoolean("IS_LOGGED_IN", false)
+                && !android.text.TextUtils.isEmpty(preferences.getString("USER_EMAIL", null));
+    }
 
-                    Toast.makeText(MainActivity.this, "¡Login exitoso!", Toast.LENGTH_SHORT).show();
+    private void cargarCredencialesRecordadas() {
+        android.content.SharedPreferences preferences =
+                getSharedPreferences("UserSession", MODE_PRIVATE);
+        if (!preferences.getBoolean("REMEMBER_CREDENTIALS", false)) {
+            return;
+        }
+        String email = preferences.getString("REMEMBERED_EMAIL", null);
+        String encryptedPassword = preferences.getString("REMEMBERED_PASSWORD", null);
+        String password = encryptedPassword == null ? null : CredentialCipher.decrypt(encryptedPassword);
+        if (email != null && password != null) {
+            etEmail.setText(email);
+            etPassword.setText(password);
+            cbAMRemember.setChecked(true);
+        }
+    }
 
-                    // Pasamos a la pantalla principal (HomeActivity)
-                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                    startActivity(intent);
-                    finish();
+    private void guardarCredencialesRecordadas(String email, String password) {
+        android.content.SharedPreferences.Editor editor =
+                getSharedPreferences("UserSession", MODE_PRIVATE).edit();
+        if (cbAMRemember.isChecked()) {
+            editor.putBoolean("REMEMBER_CREDENTIALS", true)
+                    .putString("REMEMBERED_EMAIL", email)
+                    .putString("REMEMBERED_PASSWORD", CredentialCipher.encrypt(password));
+        } else {
+            editor.remove("REMEMBER_CREDENTIALS")
+                    .remove("REMEMBERED_EMAIL")
+                    .remove("REMEMBERED_PASSWORD");
+        }
+        editor.apply();
+    }
+
+    private void abrirHome(boolean mostrarMensaje) {
+        if (mostrarMensaje) {
+            Toast.makeText(this, "¡Login exitoso!", Toast.LENGTH_SHORT).show();
+        }
+        startActivity(new Intent(this, HomeActivity.class));
+        finish();
+    }
+
+    private void iniciarSesion(String email, String password) {
+        FirebaseProvider.firestore().collection(FirebaseCollections.USUARIOS)
+                .whereEqualTo("email", email).limit(1).get()
+                .addOnSuccessListener(snapshot -> {
+                    if (snapshot.isEmpty()) {
+                        iniciarSesionOffline(email, password);
+                        return;
+                    }
+                    UsuarioFirebase remoto = snapshot.getDocuments().get(0)
+                            .toObject(UsuarioFirebase.class);
+                    if (remoto != null && PasswordHasher.hash(password)
+                            .equals(remoto.getPassword())) {
+                        guardarUsuarioLocal(email, remoto.getNombre(), password);
+                    } else {
+                        Toast.makeText(this, "Correo o contraseña incorrectos",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(error -> iniciarSesionOffline(email, password));
+    }
+
+    private void guardarUsuarioLocal(String email, String nombre, String password) {
+        databaseExecutor.execute(() -> {
+            Parcial2Dam2Database database =
+                    Parcial2Dam2Database.getInstance(getApplicationContext());
+            Usuario local = database.usuarioDao().obtenerPorEmail(email);
+            if (local == null) {
+                database.usuarioDao().insertar(
+                        new Usuario(nombre, email, PasswordHasher.hash(password)));
+            }
+            runOnUiThread(() -> {
+                guardarCredencialesRecordadas(email, password);
+                guardarSesion(email);
+                abrirHome(true);
+            });
+        });
+    }
+
+    private void iniciarSesionOffline(String email, String password) {
+        databaseExecutor.execute(() -> {
+            Usuario local = Parcial2Dam2Database.getInstance(getApplicationContext())
+                    .usuarioDao().obtenerPorEmail(email);
+            boolean valido = local != null
+                    && local.getPassword().equals(PasswordHasher.hash(password));
+            runOnUiThread(() -> {
+                if (valido) {
+                    guardarCredencialesRecordadas(email, password);
+                    guardarSesion(email);
+                    abrirHome(true);
                 } else {
-                    Toast.makeText(MainActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,
+                            "No fue posible iniciar sesión. Verifica tus credenciales.",
+                            Toast.LENGTH_LONG).show();
                 }
-            }
-
-            @Override
-            public void onFailure(Call<TokenDTO> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Error de red: " + t.getMessage(), Toast.LENGTH_LONG).show();
-            }
+            });
         });
     }
 
