@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Registro de usuario e inicio de sesión"
+        android:text="Tu barbería a un clic"
         android:textColor="@color/white"
         android:textSize="14sp" />
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">REUSISAM</string>
+    <string name="app_name">Barber App</string>
     <string name="splash_title">Barber App</string>
     <string name="user_name">Nombre usuario</string>
     <string name="in_user">Ingresar Usuario</string>
