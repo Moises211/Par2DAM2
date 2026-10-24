@@ -19,6 +19,7 @@ import java.io.File;
 
 public class MapaFragment extends Fragment {
 
+    private static final String USER_AGENT = "BarberApp-DAM235/1.0 (proyecto estudiantil UES; Android)";
     private static final double LATITUD = 13.6929;
     private static final double LONGITUD = -89.2182;
 
@@ -35,9 +36,10 @@ public class MapaFragment extends Fragment {
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
 
-        Configuration.getInstance().setUserAgentValue(requireContext().getPackageName());
-        Configuration.getInstance().setOsmdroidBasePath(new File(requireContext().getCacheDir(), "osmdroid"));
-        Configuration.getInstance().setOsmdroidTileCache(new File(requireContext().getCacheDir(), "osmdroid/tiles"));
+        // OSM bloquea los User-Agent genéricos (ej. el nombre del paquete); usar uno propio.
+        Configuration.getInstance().setUserAgentValue(USER_AGENT);
+        Configuration.getInstance().setOsmdroidBasePath(new File(requireContext().getCacheDir(), "osmdroid-v2"));
+        Configuration.getInstance().setOsmdroidTileCache(new File(requireContext().getCacheDir(), "osmdroid-v2/tiles"));
 
         View view = inflater.inflate(R.layout.fragment_mapa, container, false);
 
