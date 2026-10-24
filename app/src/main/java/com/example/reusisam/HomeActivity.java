@@ -43,6 +43,8 @@ public class HomeActivity extends AppCompatActivity {
                 fragmentSeleccionado = new InicioFragment();
             } else if (itemId == R.id.nav_productos) {
                 fragmentSeleccionado = new ProductosFragment();
+            } else if (itemId == R.id.nav_mapa) {
+                fragmentSeleccionado = new MapaFragment();
             } else if (itemId == R.id.nav_perfil) {
                 fragmentSeleccionado = new PerfilFragment();
             }
