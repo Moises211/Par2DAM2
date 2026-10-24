@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegistarActivity">
+
+    <CheckBox
+        android:id="@+id/checkBox2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:backgroundTint="@color/black"
+        android:checked="false"
+        android:drawableTint="@color/blue"
+        android:foregroundTint="@color/blue"
+        android:textColor="@color/black"
+        app:buttonIcon="@drawable/outline_eye_tracking_24"
+        app:buttonIconTint="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/et_ARConfirmPassword"
+        app:layout_constraintTop_toBottomOf="@+id/tv_ARConfirmPassword" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarAR"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/menu" />
+
+    <EditText
+        android:id="@+id/et_ARConfirmPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="16dp"
+        android:autofillHints="no"
+        android:ems="10"
+        android:hint="@string/in_confirm_password"
+        android:inputType="textPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_ARConfirmPassword" />
+
+    <TextView
+        android:id="@+id/tv_ARName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="60dp"
+        android:text="@string/user_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarAR" />
+
+    <EditText
+        android:id="@+id/et_ARName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="16dp"
+        android:autofillHints="no"
+        android:ems="10"
+        android:hint="@string/in_user"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_ARName" />
+
+    <EditText
+        android:id="@+id/et_AREmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="16dp"
+        android:autofillHints="yes"
+        android:ems="10"
+        android:hint="@string/in_email"
+        android:inputType="textEmailAddress"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_AREmail" />
+
+    <TextView
+        android:id="@+id/tv_AREmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/email"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_ARName" />
+
+    <TextView
+        android:id="@+id/tv_ARPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/password"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_AREmail" />
+
+    <EditText
+        android:id="@+id/et_ARPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="16dp"
+        android:autofillHints="no"
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_ARPassword" />
+
+    <TextView
+        android:id="@+id/tv_ARConfirmPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/confirm_password"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_ARPassword" />
+
+    <Button
+        android:id="@+id/bt_ARSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="28dp"
+        android:text="@string/btnSave"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_ARConfirmPassword" />
+
+    <Button
+        android:id="@+id/bt_ARReturn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="28dp"
+        android:text="@string/btnReturn"
+        app:layout_constraintStart_toEndOf="@+id/bt_ARSave"
+        app:layout_constraintTop_toBottomOf="@+id/et_ARConfirmPassword" />
+
+    <CheckBox
+        android:id="@+id/cb_ARPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:backgroundTint="@color/black"
+        android:checked="false"
+        android:drawableTint="@color/blue"
+        android:foregroundTint="@color/blue"
+        android:textColor="@color/black"
+        app:buttonIcon="@drawable/outline_eye_tracking_24"
+        app:buttonIconTint="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/et_ARPassword"
+        app:layout_constraintTop_toBottomOf="@+id/tv_ARPassword" />
+
+    <CheckBox
+        android:id="@+id/cb_ARConfirmPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:backgroundTint="@color/black"
+        android:checked="false"
+        android:drawableTint="@color/blue"
+        android:foregroundTint="@color/blue"
+        android:textColor="@color/black"
+        app:buttonIcon="@drawable/outline_eye_tracking_24"
+        app:buttonIconTint="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/et_ARConfirmPassword"
+        app:layout_constraintTop_toBottomOf="@+id/tv_ARConfirmPassword" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,32 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.REUSISAM" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="editTextStyle">@style/textViewRA</item>
+        <item name="materialButtonStyle">@style/buttonsViewRA</item>
+        <item name="toolbarStyle">@style/toolbarPersonalizado</item>
+    </style>
+
+    <style name="Theme.REUSISAM" parent="Base.Theme.REUSISAM" />
+
+    <style name="textViewRA" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="buttonsViewRA" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:backgroundTint">@color/blue</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.buttonsViewRA</item>
+    </style>
+    <style name="ShapeAppearance.buttonsViewRA" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+    <style name="toolbarPersonalizado" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@color/blue</item>
+        <item name="android:minHeight">56dp</item>
+
+    </style>
+</resources>
